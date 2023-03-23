@@ -1,17 +1,17 @@
 package com.ms.gestionHistoireTicket.gestionHistoireTicketService.controllers;
 
-import com.ms.gestionHistoireTicket.gestionHistoireTicketService.entities.HistoireTicket;
-import com.ms.gestionHistoireTicket.gestionHistoireTicketService.entities.ProductBacklog;
-import com.ms.gestionHistoireTicket.gestionHistoireTicketService.entities.Ticket;
-import com.ms.gestionHistoireTicket.gestionHistoireTicketService.models.Membre;
-import com.ms.gestionHistoireTicket.gestionHistoireTicketService.repositories.HistoireTicketRepository;
-import com.ms.gestionHistoireTicket.gestionHistoireTicketService.services.HistoireTicketService;
-import com.ms.gestionHistoireTicket.gestionHistoireTicketService.services.MembreService;
-import com.ms.gestionHistoireTicket.gestionHistoireTicketService.services.ProductBacklogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import com.ms.gestionHistoireTicket.gestionHistoireTicketService.entities.HistoireTicket;
+import com.ms.gestionHistoireTicket.gestionHistoireTicketService.entities.ProductBacklog;
+import com.ms.gestionHistoireTicket.gestionHistoireTicketService.entities.Sprint;
+import com.ms.gestionHistoireTicket.gestionHistoireTicketService.repositories.HistoireTicketRepository;
+import com.ms.gestionHistoireTicket.gestionHistoireTicketService.services.HistoireTicketService;
+import com.ms.gestionHistoireTicket.gestionHistoireTicketService.services.ProductBacklogService;
+import com.ms.gestionHistoireTicket.gestionHistoireTicketService.services.SprintFeignClient;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -27,12 +27,34 @@ public class HistoireTicketController {
     private ProductBacklogService productBacklogService;
     @Autowired
     private HistoireTicketRepository histoireTicketRepository;
+
+    @Autowired
+    private SprintFeignClient sprintFeignClient;
+    
     @GetMapping
     public List<HistoireTicket> getAllHistoireTickets() {
         return histoireTicketService.findAllHistoireTickets();
     }
+
+
+    @GetMapping("/{id}")
+    public HistoireTicket getTicketHistoireById(@PathVariable("id")Long id){
+        return this.histoireTicketService.getTicketHistoireById(id);
+    }
+
+    @GetMapping("/sprint/{id-sprint}")
+    public List<HistoireTicket> getHistoireTicketsBySprint(@PathVariable("id-sprint") Long idSprint){
+        List<HistoireTicket> hTickets = this.histoireTicketService.findTicketHistoireBySprintId(idSprint);
+        Sprint sprint = this.sprintFeignClient.findById(idSprint);
+        for(HistoireTicket ht:hTickets){
+            ht.setSprint(sprint);
+        }
+        return hTickets;
+    }
+
     @GetMapping("/productBacklog/{id}")
     public List<HistoireTicket> getHistoireTicketsByProductBacklog(@PathVariable(name="id") Long id) throws SQLException {
+
         ProductBacklog productBacklog  = this.productBacklogService.findProductBacklogById(id);
         List<HistoireTicket> histoireTickets = this.histoireTicketService.findAllHistoireTicketByProductBacklog(id);
         for(HistoireTicket histoireTicket:histoireTickets){
@@ -94,7 +116,6 @@ public class HistoireTicketController {
             HistoireTicket histoireTicket =  histoireTicketService.findUserStoryById(id);
             return histoireTicket;
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
             return null;
         }
@@ -103,4 +124,11 @@ public class HistoireTicketController {
     public HistoireTicket addUserStory(@RequestBody HistoireTicket userStory) {
         return histoireTicketService.addUserStory(userStory);
     }
+
+    @PutMapping
+    public HistoireTicket modifierHistoireTicket(@RequestBody HistoireTicket ticket){
+        return histoireTicketService.detacherHistoireTicket(ticket);
+    }
+
+
 }

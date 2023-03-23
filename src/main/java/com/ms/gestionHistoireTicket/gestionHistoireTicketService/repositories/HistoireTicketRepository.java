@@ -9,4 +9,8 @@ public interface HistoireTicketRepository extends JpaRepository<HistoireTicket, 
     public List<HistoireTicket> findAllByProductBacklogId(Long id);
     public List<HistoireTicket> findByMembreId(Long membreId);
     public List<HistoireTicket> findByproductBacklogId(Long productBacklogId);
+
+    public List<HistoireTicket> findBySprintId(Long sprintId);
+
+    
 }

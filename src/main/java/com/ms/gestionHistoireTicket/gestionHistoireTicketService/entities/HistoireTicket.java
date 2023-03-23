@@ -2,9 +2,22 @@ package com.ms.gestionHistoireTicket.gestionHistoireTicketService.entities;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ms.gestionHistoireTicket.gestionHistoireTicketService.models.Membre;
-import com.ms.gestionHistoireTicket.gestionHistoireTicketService.models.Sprint;
-import jakarta.persistence.*;
-import lombok.*;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
+
 @Entity
 @Table(name="histoire_ticket")
 @Data
@@ -17,8 +30,10 @@ public class HistoireTicket extends Ticket {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String priorite;
+
+    @Enumerated(EnumType.STRING) 
+    private TicketHistoireStatus status;
     private int effort;
-    @Column(nullable = true,name = "productBacklogId")
     private Long productBacklogId;
     @Transient
     private ProductBacklog productBacklog;

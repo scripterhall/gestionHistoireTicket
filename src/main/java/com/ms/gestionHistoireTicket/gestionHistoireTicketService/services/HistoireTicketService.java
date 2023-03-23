@@ -1,9 +1,5 @@
 package com.ms.gestionHistoireTicket.gestionHistoireTicketService.services;
 
-import com.ms.gestionHistoireTicket.gestionHistoireTicketService.entities.HistoireTicket;
-import com.ms.gestionHistoireTicket.gestionHistoireTicketService.entities.ProductBacklog;
-import com.ms.gestionHistoireTicket.gestionHistoireTicketService.models.Sprint;
-import com.ms.gestionHistoireTicket.gestionHistoireTicketService.repositories.HistoireTicketRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -11,6 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+
+import com.ms.gestionHistoireTicket.gestionHistoireTicketService.entities.HistoireTicket;
+import com.ms.gestionHistoireTicket.gestionHistoireTicketService.entities.ProductBacklog;
+import com.ms.gestionHistoireTicket.gestionHistoireTicketService.entities.Sprint;
+import com.ms.gestionHistoireTicket.gestionHistoireTicketService.repositories.HistoireTicketRepository;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -20,6 +21,8 @@ public class HistoireTicketService {
     private static final Logger logger = LogManager.getLogger(HistoireTicketService.class);
     @Autowired
     private HistoireTicketRepository histoireTicketRepository;
+    @Autowired
+    private TicketTacheFeignClient ticketTacheFeignClient;
     @Autowired
     private RestTemplate restTemplate;
     @Value("http://localhost:9999/gestion-sprints-service/sprints")
@@ -75,4 +78,17 @@ public class HistoireTicketService {
         return histoireTicketRepository.save(userStory);
     }
 
+
+    public List<HistoireTicket> findTicketHistoireBySprintId(Long idSprint){
+        return this.histoireTicketRepository.findBySprintId(idSprint);
+    }
+
+    public HistoireTicket detacherHistoireTicket(HistoireTicket ticket){
+        this.ticketTacheFeignClient.deleteAllByTicketHistoireId(ticket.getId());
+        return this.histoireTicketRepository.save(ticket);
+    }
+
+    public HistoireTicket getTicketHistoireById(Long id){
+        return this.histoireTicketRepository.findById(id).get();
+    }
 }

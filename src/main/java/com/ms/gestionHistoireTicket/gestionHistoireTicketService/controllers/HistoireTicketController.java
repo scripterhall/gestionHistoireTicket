@@ -1,5 +1,6 @@
 package com.ms.gestionHistoireTicket.gestionHistoireTicketService.controllers;
 
+import com.ms.gestionHistoireTicket.gestionHistoireTicketService.entities.TicketHistoireStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -65,6 +66,7 @@ public class HistoireTicketController {
 
     @PostMapping
     public ResponseEntity<HistoireTicket> addHistoireTicket(@RequestBody HistoireTicket histoireTicket) {
+        histoireTicket.setStatus(TicketHistoireStatus.EN_ATTENTE);
         HistoireTicket newHistoireTicket = histoireTicketService.addHistoireTicket(histoireTicket);
         return ResponseEntity.ok(newHistoireTicket);
     }
@@ -110,24 +112,28 @@ public class HistoireTicketController {
     public HistoireTicket assignUserStoryToProductBacklog(@PathVariable Long histoireTicketId, @PathVariable Long productBacklogId) {
         return histoireTicketService.assignUserStoryToProductBacklog(histoireTicketId, productBacklogId);
     }
-    @GetMapping("/{id}")
-    public HistoireTicket getUserStoryById(@PathVariable Long id) {
-        try {
-            HistoireTicket histoireTicket =  histoireTicketService.findUserStoryById(id);
-            return histoireTicket;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
     @PostMapping("/new")
     public HistoireTicket addUserStory(@RequestBody HistoireTicket userStory) {
         return histoireTicketService.addUserStory(userStory);
     }
 
     @PutMapping
-    public HistoireTicket modifierHistoireTicket(@RequestBody HistoireTicket ticket){
+    public HistoireTicket detacherHistoireTicket(@RequestBody HistoireTicket ticket){
         return histoireTicketService.detacherHistoireTicket(ticket);
+    }
+    @PutMapping("/histoireTicket/{id}")
+    public ResponseEntity<HistoireTicket> updateUserStory(@PathVariable Long id, @RequestBody HistoireTicket histoireTicket) {
+        HistoireTicket existingHistoireTicket = histoireTicketService.getTicketHistoireById(id);
+        if (existingHistoireTicket != null) {
+            existingHistoireTicket.setTitre(histoireTicket.getTitre());
+            existingHistoireTicket.setDescription(histoireTicket.getDescription());
+            existingHistoireTicket.setPriorite(histoireTicket.getPriorite());
+            existingHistoireTicket.setEffort(histoireTicket.getEffort());
+            existingHistoireTicket.setSprintId(histoireTicket.getSprintId());
+            HistoireTicket updatedHistoireTicket = histoireTicketService.addHistoireTicket(existingHistoireTicket);
+            return ResponseEntity.ok(updatedHistoireTicket);
+        }
+        return ResponseEntity.notFound().build();
     }
 
 

@@ -51,6 +51,7 @@ public class HistoireTicketService {
         HistoireTicket histoireTicket = histoireTicketRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("User story with id " + id + " not found"));
         histoireTicket.setProductBacklogId(null);
+        histoireTicket.setSprintId(null);
         histoireTicketRepository.save(histoireTicket);
     }
     public HistoireTicket assignUserStoryToSprint(Long histoireTicketId, Long sprintId) {
@@ -70,9 +71,6 @@ public class HistoireTicketService {
         histoireTicket.setProductBacklogId(productBacklog.getId());
         histoireTicketRepository.save(histoireTicket);
         return histoireTicket;
-    }
-    public HistoireTicket findUserStoryById(Long id) throws SQLException {
-        return this.histoireTicketRepository.findById(id).get();
     }
     public HistoireTicket addUserStory(HistoireTicket userStory) {
         return histoireTicketRepository.save(userStory);

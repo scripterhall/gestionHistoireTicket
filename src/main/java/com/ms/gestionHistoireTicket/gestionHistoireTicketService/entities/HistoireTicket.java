@@ -1,6 +1,5 @@
 package com.ms.gestionHistoireTicket.gestionHistoireTicketService.entities;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ms.gestionHistoireTicket.gestionHistoireTicketService.models.Membre;
 
 import jakarta.persistence.Entity;
@@ -41,7 +40,6 @@ public class HistoireTicket extends Ticket {
     private Long membreId;
     @Transient
     private Membre membre;
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Long sprintId;
     @Transient
     private Sprint sprint;

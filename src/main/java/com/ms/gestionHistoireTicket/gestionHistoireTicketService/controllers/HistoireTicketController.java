@@ -40,6 +40,7 @@ public class HistoireTicketController {
 
     @GetMapping("/{id}")
     public HistoireTicket getTicketHistoireById(@PathVariable("id")Long id){
+
         return this.histoireTicketService.getTicketHistoireById(id);
     }
 
@@ -125,11 +126,15 @@ public class HistoireTicketController {
     public ResponseEntity<HistoireTicket> updateUserStory(@PathVariable Long id, @RequestBody HistoireTicket histoireTicket) {
         HistoireTicket existingHistoireTicket = histoireTicketService.getTicketHistoireById(id);
         if (existingHistoireTicket != null) {
+            existingHistoireTicket.setStatus(histoireTicket.getStatus());
             existingHistoireTicket.setTitre(histoireTicket.getTitre());
             existingHistoireTicket.setDescription(histoireTicket.getDescription());
+            
             existingHistoireTicket.setPriorite(histoireTicket.getPriorite());
             existingHistoireTicket.setEffort(histoireTicket.getEffort());
             existingHistoireTicket.setSprintId(histoireTicket.getSprintId());
+            if(histoireTicket.getProductBacklogId()!=null && existingHistoireTicket.getProductBacklogId()==null)
+                existingHistoireTicket.setProductBacklogId(histoireTicket.getProductBacklogId());
             HistoireTicket updatedHistoireTicket = histoireTicketService.addHistoireTicket(existingHistoireTicket);
             return ResponseEntity.ok(updatedHistoireTicket);
         }

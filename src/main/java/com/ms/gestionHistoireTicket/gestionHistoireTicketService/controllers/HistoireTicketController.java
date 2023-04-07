@@ -78,14 +78,7 @@ public class HistoireTicketController {
         List<HistoireTicket> histoireTickets = this.histoireTicketService.getHistoireTicketsByMembreId(membreId);
         return ResponseEntity.ok(histoireTickets);
     }
-
-    /*@GetMapping("/product-backlog/{productBacklogId}")
-    public ResponseEntity<List<HistoireTicket>> getHistoireTicketsByProductBacklogId(@PathVariable Long productBacklogId) {
-        List<HistoireTicket> histoireTickets = histoireTicketService.getHistoireTicketsByProductBacklogId(productBacklogId);
-        Collections.sort(histoireTickets, Comparator.comparingInt(HistoireTicket::getPosition));
-        return new ResponseEntity<>(histoireTickets, HttpStatus.OK);
-    }*/
-
+    
     @GetMapping("/product-backlog/{productBacklogId}")
     public ResponseEntity<List<HistoireTicket>> getHistoireTicketsByProductBacklogId(@PathVariable Long productBacklogId) {
         List<HistoireTicket> histoireTickets = histoireTicketService.getHistoireTicketsByProductBacklogId(productBacklogId);

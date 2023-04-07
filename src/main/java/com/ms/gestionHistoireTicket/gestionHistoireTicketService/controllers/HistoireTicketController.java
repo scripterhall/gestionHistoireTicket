@@ -15,9 +15,10 @@ import com.ms.gestionHistoireTicket.gestionHistoireTicketService.services.Produc
 import com.ms.gestionHistoireTicket.gestionHistoireTicketService.services.SprintFeignClient;
 
 import java.sql.SQLException;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/histoireTickets")
@@ -42,20 +43,20 @@ public class HistoireTicketController {
     public HistoireTicket getTicketHistoireById(@PathVariable("id")Long id){
         return this.histoireTicketService.getTicketHistoireById(id);
     }
-
     @GetMapping("/sprint/{id-sprint}")
     public List<HistoireTicket> getHistoireTicketsBySprint(@PathVariable("id-sprint") Long idSprint){
         List<HistoireTicket> hTickets = this.histoireTicketService.findTicketHistoireBySprintId(idSprint);
         Sprint sprint = this.sprintFeignClient.findById(idSprint);
         for(HistoireTicket ht:hTickets){
+            ht.setDateFin(truncateDate(ht.getDateFin()));
             ht.setSprint(sprint);
         }
+        Collections.sort(hTickets, Comparator.comparing(HistoireTicket::getDateFin));
+
         return hTickets;
     }
-
     @GetMapping("/productBacklog/{id}")
     public List<HistoireTicket> getHistoireTicketsByProductBacklog(@PathVariable(name="id") Long id) throws SQLException {
-
         ProductBacklog productBacklog  = this.productBacklogService.findProductBacklogById(id);
         List<HistoireTicket> histoireTickets = this.histoireTicketService.findAllHistoireTicketByProductBacklog(id);
         for(HistoireTicket histoireTicket:histoireTickets){
@@ -71,30 +72,41 @@ public class HistoireTicketController {
         return ResponseEntity.ok(newHistoireTicket);
     }
 
-    @PutMapping("/position")
-    public ResponseEntity<?> updateTicketPosition(@RequestBody Map<String, Object> request) {
-        Long ticketId = Long.parseLong(request.get("id").toString());
-        int newPosition = Integer.parseInt(request.get("position").toString());
-        Optional<HistoireTicket> optionalTicket = histoireTicketRepository.findById(ticketId);
-        if (optionalTicket.isPresent()) {
-            HistoireTicket ticket = optionalTicket.get();
-            ticket.setPosition(newPosition);
-            histoireTicketRepository.save(ticket);
-            return ResponseEntity.ok().build();
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
     @GetMapping("/membre/{membreId}")
     public ResponseEntity<List<HistoireTicket>> getHistoireTicketsByMembreId(@PathVariable Long membreId) {
         List<HistoireTicket> histoireTickets = this.histoireTicketService.getHistoireTicketsByMembreId(membreId);
         return ResponseEntity.ok(histoireTickets);
     }
+
+    /*@GetMapping("/product-backlog/{productBacklogId}")
+    public ResponseEntity<List<HistoireTicket>> getHistoireTicketsByProductBacklogId(@PathVariable Long productBacklogId) {
+        List<HistoireTicket> histoireTickets = histoireTicketService.getHistoireTicketsByProductBacklogId(productBacklogId);
+        Collections.sort(histoireTickets, Comparator.comparingInt(HistoireTicket::getPosition));
+        return new ResponseEntity<>(histoireTickets, HttpStatus.OK);
+    }*/
+
     @GetMapping("/product-backlog/{productBacklogId}")
     public ResponseEntity<List<HistoireTicket>> getHistoireTicketsByProductBacklogId(@PathVariable Long productBacklogId) {
         List<HistoireTicket> histoireTickets = histoireTicketService.getHistoireTicketsByProductBacklogId(productBacklogId);
+        for (HistoireTicket ht : histoireTickets) {
+            ht.setDateFin(truncateDate(ht.getDateFin()));
+        }
+        Collections.sort(histoireTickets, Comparator.comparingInt(HistoireTicket::getPosition));
         return new ResponseEntity<>(histoireTickets, HttpStatus.OK);
     }
+
+    private Date truncateDate(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        return calendar.getTime();
+    }
+
+
+
     @DeleteMapping("/{id}")
     public void deleteUserStoryById(@PathVariable Long id) {
         histoireTicketService.deleteUserStoryById(id);
@@ -130,6 +142,7 @@ public class HistoireTicketController {
             existingHistoireTicket.setPriorite(histoireTicket.getPriorite());
             existingHistoireTicket.setEffort(histoireTicket.getEffort());
             existingHistoireTicket.setSprintId(histoireTicket.getSprintId());
+            existingHistoireTicket.setPosition(histoireTicket.getPosition());
             HistoireTicket updatedHistoireTicket = histoireTicketService.addHistoireTicket(existingHistoireTicket);
             return ResponseEntity.ok(updatedHistoireTicket);
         }

@@ -16,6 +16,8 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.util.Date;
+
 
 @Entity
 @Table(name="histoire_ticket")
@@ -43,4 +45,6 @@ public class HistoireTicket extends Ticket {
     private Long sprintId;
     @Transient
     private Sprint sprint;
+    private Date dateDebut;
+    private Date dateFin;
 }

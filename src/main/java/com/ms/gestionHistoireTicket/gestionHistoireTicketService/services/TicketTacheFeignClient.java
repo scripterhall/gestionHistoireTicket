@@ -9,5 +9,4 @@ public interface TicketTacheFeignClient  {
 
     @DeleteMapping("/ticket-taches/ticket-histoire/{id}")
     public void deleteAllByTicketHistoireId(@PathVariable("id") Long id);
-    
 }

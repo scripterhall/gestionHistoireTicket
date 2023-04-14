@@ -1,24 +1,19 @@
-package com.ms.gestionHistoireTicket.gestionHistoireTicketService.controllers;
+package com.ms.gestionHistoireTicket.controllers;
 
-import com.ms.gestionHistoireTicket.gestionHistoireTicketService.entities.TicketHistoireStatus;
+import com.ms.gestionHistoireTicket.entities.HistoireTicket;
+import com.ms.gestionHistoireTicket.entities.ProductBacklog;
+import com.ms.gestionHistoireTicket.entities.Sprint;
+import com.ms.gestionHistoireTicket.entities.TicketHistoireStatus;
+import com.ms.gestionHistoireTicket.repositories.HistoireTicketRepository;
+import com.ms.gestionHistoireTicket.services.HistoireTicketService;
+import com.ms.gestionHistoireTicket.services.ProductBacklogService;
+import com.ms.gestionHistoireTicket.services.SprintFeignClient;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.ms.gestionHistoireTicket.gestionHistoireTicketService.entities.HistoireTicket;
-import com.ms.gestionHistoireTicket.gestionHistoireTicketService.entities.ProductBacklog;
-import com.ms.gestionHistoireTicket.gestionHistoireTicketService.entities.Sprint;
-import com.ms.gestionHistoireTicket.gestionHistoireTicketService.repositories.HistoireTicketRepository;
-import com.ms.gestionHistoireTicket.gestionHistoireTicketService.services.HistoireTicketService;
-import com.ms.gestionHistoireTicket.gestionHistoireTicketService.services.ProductBacklogService;
-import com.ms.gestionHistoireTicket.gestionHistoireTicketService.services.SprintFeignClient;
-
 import java.sql.SQLException;
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/histoireTickets")

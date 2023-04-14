@@ -1,8 +1,7 @@
-package com.ms.gestionHistoireTicket.gestionHistoireTicketService.repositories;
+package com.ms.gestionHistoireTicket.repositories;
 
-import com.ms.gestionHistoireTicket.gestionHistoireTicketService.entities.HistoireTicket;
+import com.ms.gestionHistoireTicket.entities.HistoireTicket;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 

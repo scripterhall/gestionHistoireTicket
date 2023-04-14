@@ -1,6 +1,10 @@
-package com.ms.gestionHistoireTicket.gestionHistoireTicketService.services;
+package com.ms.gestionHistoireTicket.services;
 
-import com.ms.gestionHistoireTicket.gestionHistoireTicketService.entities.TicketHistoireStatus;
+import com.ms.gestionHistoireTicket.entities.HistoireTicket;
+import com.ms.gestionHistoireTicket.entities.ProductBacklog;
+import com.ms.gestionHistoireTicket.entities.Sprint;
+import com.ms.gestionHistoireTicket.entities.TicketHistoireStatus;
+import com.ms.gestionHistoireTicket.repositories.HistoireTicketRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -8,11 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-
-import com.ms.gestionHistoireTicket.gestionHistoireTicketService.entities.HistoireTicket;
-import com.ms.gestionHistoireTicket.gestionHistoireTicketService.entities.ProductBacklog;
-import com.ms.gestionHistoireTicket.gestionHistoireTicketService.entities.Sprint;
-import com.ms.gestionHistoireTicket.gestionHistoireTicketService.repositories.HistoireTicketRepository;
 
 import java.sql.SQLException;
 import java.util.Date;

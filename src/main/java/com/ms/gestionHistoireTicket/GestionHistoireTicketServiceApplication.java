@@ -1,5 +1,6 @@
-package com.ms.gestionHistoireTicket.gestionHistoireTicketService;
+package com.ms.gestionHistoireTicket;
 
+import com.ms.gestionHistoireTicket.entities.HistoireTicket;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -9,8 +10,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.web.client.RestTemplate;
-
-import com.ms.gestionHistoireTicket.gestionHistoireTicketService.entities.HistoireTicket;
 
 @SpringBootApplication
 @EnableFeignClients

@@ -49,13 +49,15 @@ public class HistoireTicketController {
         List<HistoireTicket> hTickets = this.histoireTicketService.findTicketHistoireBySprintId(idSprint);
         Sprint sprint = this.sprintFeignClient.findById(idSprint);
         for(HistoireTicket ht:hTickets){
-            ht.setDateFin(truncateDate(ht.getDateFin()));
+            if(ht.getDateFin() != null){
+                ht.setDateFin(truncateDate(ht.getDateFin()));
+            }
             ht.setSprint(sprint);
         }
-        Collections.sort(hTickets, Comparator.comparing(HistoireTicket::getDateFin));
-
+        Collections.sort(hTickets, Comparator.comparing(HistoireTicket::getDateFin, Comparator.nullsLast(Comparator.naturalOrder())));
         return hTickets;
     }
+
     @GetMapping("/productBacklog/{id}")
     public List<HistoireTicket> getHistoireTicketsByProductBacklog(@PathVariable(name="id") Long id) throws SQLException {
         ProductBacklog productBacklog  = this.productBacklogService.findProductBacklogById(id);
@@ -63,6 +65,7 @@ public class HistoireTicketController {
         for(HistoireTicket histoireTicket:histoireTickets){
             histoireTicket.setProductBacklog(productBacklog);
         }
+        Collections.sort(histoireTickets, Comparator.comparingInt(HistoireTicket::getPosition));
         return histoireTickets;
     }
 
@@ -78,17 +81,6 @@ public class HistoireTicketController {
         List<HistoireTicket> histoireTickets = this.histoireTicketService.getHistoireTicketsByMembreId(membreId);
         return ResponseEntity.ok(histoireTickets);
     }
-    
-    @GetMapping("/product-backlog/{productBacklogId}")
-    public ResponseEntity<List<HistoireTicket>> getHistoireTicketsByProductBacklogId(@PathVariable Long productBacklogId) {
-        List<HistoireTicket> histoireTickets = histoireTicketService.getHistoireTicketsByProductBacklogId(productBacklogId);
-        for (HistoireTicket ht : histoireTickets) {
-            ht.setDateFin(truncateDate(ht.getDateFin()));
-        }
-        Collections.sort(histoireTickets, Comparator.comparingInt(HistoireTicket::getPosition));
-        return new ResponseEntity<>(histoireTickets, HttpStatus.OK);
-    }
-
     private Date truncateDate(Date date) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);

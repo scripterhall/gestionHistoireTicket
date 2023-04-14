@@ -2,6 +2,7 @@ package com.ms.gestionHistoireTicket.gestionHistoireTicketService.entities;
 
 import com.ms.gestionHistoireTicket.gestionHistoireTicketService.models.Membre;
 
+import jakarta.annotation.Nullable;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;

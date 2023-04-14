@@ -1,4 +1,4 @@
-package com.ms.gestionHistoireTicket.gestionHistoireTicketService.services;
+package com.ms.gestionHistoireTicket.services;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.DeleteMapping;

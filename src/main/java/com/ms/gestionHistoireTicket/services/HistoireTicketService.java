@@ -1,5 +1,10 @@
-package com.ms.gestionHistoireTicket.gestionHistoireTicketService.services;
+package com.ms.gestionHistoireTicket.services;
 
+import com.ms.gestionHistoireTicket.entities.HistoireTicket;
+import com.ms.gestionHistoireTicket.entities.ProductBacklog;
+import com.ms.gestionHistoireTicket.entities.Sprint;
+import com.ms.gestionHistoireTicket.entities.TicketHistoireStatus;
+import com.ms.gestionHistoireTicket.repositories.HistoireTicketRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -8,12 +13,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import com.ms.gestionHistoireTicket.gestionHistoireTicketService.entities.HistoireTicket;
-import com.ms.gestionHistoireTicket.gestionHistoireTicketService.entities.ProductBacklog;
-import com.ms.gestionHistoireTicket.gestionHistoireTicketService.entities.Sprint;
-import com.ms.gestionHistoireTicket.gestionHistoireTicketService.repositories.HistoireTicketRepository;
-
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -72,9 +73,25 @@ public class HistoireTicketService {
         histoireTicketRepository.save(histoireTicket);
         return histoireTicket;
     }
+
     public HistoireTicket addUserStory(HistoireTicket userStory) {
-        return histoireTicketRepository.save(userStory);
+        HistoireTicket existingUserStory = histoireTicketRepository
+                .findByProductBacklogIdAndTitreAndDescriptionAndEffortAndPriorite(
+                        userStory.getProductBacklogId(),
+                        userStory.getTitre(),
+                        userStory.getDescription(),
+                        userStory.getEffort(),
+                        userStory.getPriorite()
+                );
+
+        if(existingUserStory != null) {
+            return existingUserStory;
+        } else {
+            userStory.setStatus(TicketHistoireStatus.EN_ATTENTE);
+            return histoireTicketRepository.save(userStory);
+        }
     }
+
 
 
     public List<HistoireTicket> findTicketHistoireBySprintId(Long idSprint){

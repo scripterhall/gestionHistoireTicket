@@ -1,7 +1,7 @@
-package com.ms.gestionHistoireTicket.gestionHistoireTicketService.entities;
+package com.ms.gestionHistoireTicket.entities;
 
-import com.ms.gestionHistoireTicket.gestionHistoireTicketService.models.Membre;
 
+import com.ms.gestionHistoireTicket.models.Membre;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -15,6 +15,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+
+import java.util.Date;
 
 
 @Entity
@@ -43,4 +45,6 @@ public class HistoireTicket extends Ticket {
     private Long sprintId;
     @Transient
     private Sprint sprint;
+    private Date dateDebut;
+    private Date dateFin;
 }

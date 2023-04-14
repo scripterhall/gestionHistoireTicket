@@ -1,6 +1,6 @@
-package com.ms.gestionHistoireTicket.gestionHistoireTicketService.repositories;
+package com.ms.gestionHistoireTicket.repositories;
 
-import com.ms.gestionHistoireTicket.gestionHistoireTicketService.entities.HistoireTicket;
+import com.ms.gestionHistoireTicket.entities.HistoireTicket;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -12,5 +12,12 @@ public interface HistoireTicketRepository extends JpaRepository<HistoireTicket, 
 
     public List<HistoireTicket> findBySprintId(Long sprintId);
 
+    HistoireTicket findByProductBacklogIdAndTitreAndDescriptionAndEffortAndPriorite(
+            Long productBacklogId,
+            String titre,
+            String description,
+            Integer effort,
+            String priorite
+    );
     
 }

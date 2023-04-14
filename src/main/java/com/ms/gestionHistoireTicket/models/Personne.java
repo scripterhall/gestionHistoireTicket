@@ -1,4 +1,4 @@
-package com.ms.gestionHistoireTicket.gestionHistoireTicketService.models;
+package com.ms.gestionHistoireTicket.models;
 
 import java.util.Date;
 

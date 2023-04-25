@@ -1,10 +1,9 @@
-package com.ms.gestionHistoireTicket.gestionHistoireTicketService.services;
+package com.ms.gestionHistoireTicket.services;
 
+import com.ms.gestionHistoireTicket.entities.Sprint;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-
-import com.ms.gestionHistoireTicket.gestionHistoireTicketService.entities.Sprint;
 
 @FeignClient("gestion-sprints-service")
 public interface SprintFeignClient {

@@ -1,4 +1,4 @@
-package com.ms.gestionHistoireTicket.gestionHistoireTicketService.entities;
+package com.ms.gestionHistoireTicket.entities;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

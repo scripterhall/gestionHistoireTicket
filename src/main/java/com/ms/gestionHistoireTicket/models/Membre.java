@@ -1,4 +1,4 @@
-package com.ms.gestionHistoireTicket.gestionHistoireTicketService.models;
+package com.ms.gestionHistoireTicket.models;
 
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;

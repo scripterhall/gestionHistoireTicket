@@ -1,8 +1,7 @@
-package com.ms.gestionHistoireTicket.gestionHistoireTicketService.entities;
+package com.ms.gestionHistoireTicket.entities;
 
-import com.ms.gestionHistoireTicket.gestionHistoireTicketService.models.Membre;
 
-import jakarta.annotation.Nullable;
+import com.ms.gestionHistoireTicket.models.Membre;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;

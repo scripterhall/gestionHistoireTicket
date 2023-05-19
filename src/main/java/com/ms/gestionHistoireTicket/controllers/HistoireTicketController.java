@@ -4,8 +4,9 @@ import com.ms.gestionHistoireTicket.entities.HistoireTicket;
 import com.ms.gestionHistoireTicket.entities.ProductBacklog;
 import com.ms.gestionHistoireTicket.entities.Sprint;
 import com.ms.gestionHistoireTicket.entities.TicketHistoireStatus;
-import com.ms.gestionHistoireTicket.repositories.HistoireTicketRepository;
+import com.ms.gestionHistoireTicket.models.Membre;
 import com.ms.gestionHistoireTicket.services.HistoireTicketService;
+import com.ms.gestionHistoireTicket.services.MembreService;
 import com.ms.gestionHistoireTicket.services.ProductBacklogService;
 import com.ms.gestionHistoireTicket.services.SprintFeignClient;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +23,10 @@ public class HistoireTicketController {
     private HistoireTicketService histoireTicketService;
     @Autowired
     private ProductBacklogService productBacklogService;
+
     @Autowired
-    private HistoireTicketRepository histoireTicketRepository;
+    private MembreService membreService;
+    
 
     @Autowired
     private SprintFeignClient sprintFeignClient;
@@ -47,6 +50,10 @@ public class HistoireTicketController {
             /*if(ht.getDateFin() != null){
                 ht.setDateFin(truncateDate(ht.getDateFin()));
             }*/
+            if(ht.getMembreId()!=null){
+                Membre membre = this.membreService.findMembreById((ht.getMembreId()));
+                ht.setMembre(membre);
+            }
             ht.setSprint(sprint);
         }
         Collections.sort(hTickets, Comparator.comparing(HistoireTicket::getDateFin, Comparator.nullsLast(Comparator.naturalOrder())));

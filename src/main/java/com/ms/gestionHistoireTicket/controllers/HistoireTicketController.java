@@ -39,7 +39,13 @@ public class HistoireTicketController {
 
     @GetMapping("/{id}")
     public HistoireTicket getTicketHistoireById(@PathVariable("id")Long id){
-        return this.histoireTicketService.getTicketHistoireById(id);
+
+        HistoireTicket ht = this.histoireTicketService.getTicketHistoireById(id);
+        if(ht.getSprintId()!=null){
+          Sprint sp =  this.sprintFeignClient.findById(ht.getSprintId());
+          ht.setSprint(sp);
+        }
+        return ht;
     }
 
     @GetMapping("/sprint/{id-sprint}")

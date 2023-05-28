@@ -26,9 +26,9 @@ public class HistoireTicketService {
     private TicketTacheFeignClient ticketTacheFeignClient;
     @Autowired
     private RestTemplate restTemplate;
-    @Value("http://localhost:9999/gestion-sprints-service/sprints")
+    @Value("http://localhost:8089/sprints")
     private String sprintServiceUrl;
-    @Value("http://localhost:9999/gestion-product-backlog/product-backlogs")
+    @Value("http://localhost:8087/product-backlogs")
     private String productBacklogServiceUrl;
     public List<HistoireTicket> findAllHistoireTicketByProductBacklog(Long id){
         return this.histoireTicketRepository.findAllByProductBacklogId(id);
